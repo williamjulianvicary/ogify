@@ -28,19 +28,17 @@ final readonly class CloudflareRenderer implements Renderer
         $response = Http::withToken($this->apiToken)
             ->timeout(60)
             ->connectTimeout(10)
-            ->retry(3, 1000)
             ->post(
                 sprintf('https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/screenshot', $this->accountId),
                 [
                     'url' => $url,
-                    'type' => '.'.$this->format,
-                    'deviceScaleFactor' => $this->deviceScaleFactor,
                     'viewport' => [
                         'width' => $width,
                         'height' => $height,
+                        'deviceScaleFactor' => $this->deviceScaleFactor,
                     ],
                     'screenshotOptions' => [
-                        'format' => $this->format,
+                        'type' => $this->format,
                     ],
                     'gotoOptions' => [
                         'waitUntil' => 'networkidle0',
