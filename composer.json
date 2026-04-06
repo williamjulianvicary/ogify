@@ -1,6 +1,5 @@
 {
     "name": "williamjulianvicary/ogify",
-    "version": "1.0.0",
     "description": "Driver-based OG image generation for Laravel with Cloudflare Browser Rendering and Browsershot support.",
     "keywords": ["laravel", "og-image", "open-graph", "cloudflare", "browser-rendering", "social-media"],
     "license": "MIT",
