@@ -1,5 +1,5 @@
 {
-    "name": "williamjulianvicary/ogify",
+    "name": "williamjulianvicary/unfurl",
     "description": "Driver-based OG image generation for Laravel with Cloudflare Browser Rendering and Browsershot support.",
     "keywords": ["laravel", "og-image", "open-graph", "cloudflare", "browser-rendering", "social-media"],
     "license": "MIT",
@@ -31,18 +31,18 @@
     },
     "autoload": {
         "psr-4": {
-            "WilliamJulianVicary\\Ogify\\": "src/"
+            "WilliamJulianVicary\\Unfurl\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "WilliamJulianVicary\\Ogify\\Tests\\": "tests/"
+            "WilliamJulianVicary\\Unfurl\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "WilliamJulianVicary\\Ogify\\OgImageServiceProvider"
+                "WilliamJulianVicary\\Unfurl\\OgImageServiceProvider"
             ]
         }
     },

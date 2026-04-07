@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify;
+namespace WilliamJulianVicary\Unfurl;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use WilliamJulianVicary\Ogify\Contracts\Renderer;
-use WilliamJulianVicary\Ogify\Http\Controllers\PreviewOgTemplateController;
-use WilliamJulianVicary\Ogify\Http\Controllers\RenderOgTemplateController;
+use WilliamJulianVicary\Unfurl\Contracts\Renderer;
+use WilliamJulianVicary\Unfurl\Http\Controllers\PreviewOgTemplateController;
+use WilliamJulianVicary\Unfurl\Http\Controllers\RenderOgTemplateController;
 
 final class OgImageServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/og-image.php', 'og-image');
+        $this->mergeConfigFrom(__DIR__.'/../config/unfurl.php', 'unfurl');
 
         $this->app->singleton(OgImageManager::class, fn (): OgImageManager => new OgImageManager($this->app));
 
@@ -25,40 +25,40 @@ final class OgImageServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'og-image');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'unfurl');
 
-        if (config('og-image.route.enabled', false)) {
+        if (config('unfurl.route.enabled', false)) {
             $this->registerRoutes();
         }
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/og-image.php' => config_path('og-image.php'),
-            ], 'og-image-config');
+                __DIR__.'/../config/unfurl.php' => config_path('unfurl.php'),
+            ], 'unfurl-config');
 
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/og-image'),
-            ], 'og-image-views');
+                __DIR__.'/../resources/views' => resource_path('views/vendor/unfurl'),
+            ], 'unfurl-views');
 
             $this->publishesMigrations([
                 __DIR__.'/../database/migrations' => database_path('migrations'),
-            ], 'og-image-migrations');
+            ], 'unfurl-migrations');
         }
     }
 
     private function registerRoutes(): void
     {
         Route::group([
-            'prefix' => config('og-image.route.prefix', 'og-image'),
-            'middleware' => array_merge(['signed'], config()->array('og-image.route.middleware', [])),
+            'prefix' => config('unfurl.route.prefix', 'unfurl'),
+            'middleware' => array_merge(['signed'], config()->array('unfurl.route.middleware', [])),
         ], function (): void {
             Route::get('render/{template}', RenderOgTemplateController::class)
                 ->where('template', '.*')
-                ->name('og-image.render');
+                ->name('unfurl.render');
 
             Route::get('preview/{template}', PreviewOgTemplateController::class)
                 ->where('template', '.*')
-                ->name('og-image.preview')
+                ->name('unfurl.preview')
                 ->withoutMiddleware('signed');
         });
     }

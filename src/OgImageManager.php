@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify;
+namespace WilliamJulianVicary\Unfurl;
 
 use Illuminate\Support\Manager;
-use WilliamJulianVicary\Ogify\Contracts\Renderer;
-use WilliamJulianVicary\Ogify\Drivers\BrowsershotRenderer;
-use WilliamJulianVicary\Ogify\Drivers\CloudflareRenderer;
+use WilliamJulianVicary\Unfurl\Contracts\Renderer;
+use WilliamJulianVicary\Unfurl\Drivers\BrowsershotRenderer;
+use WilliamJulianVicary\Unfurl\Drivers\CloudflareRenderer;
 
 final class OgImageManager extends Manager
 {
@@ -24,33 +24,33 @@ final class OgImageManager extends Manager
 
     public function getDefaultDriver(): string
     {
-        return config()->string('og-image.driver', 'cloudflare');
+        return config()->string('unfurl.driver', 'cloudflare');
     }
 
     public function createCloudflareDriver(): CloudflareRenderer
     {
         /** @var array{account_id: string|null, api_token: string|null} $config */
-        $config = $this->config->get('og-image.drivers.cloudflare', []);
+        $config = $this->config->get('unfurl.drivers.cloudflare', []);
 
         return new CloudflareRenderer(
             accountId: $config['account_id'] ?? '',
             apiToken: $config['api_token'] ?? '',
-            format: config()->string('og-image.format', 'jpeg'),
-            deviceScaleFactor: config()->integer('og-image.device_scale_factor', 2),
+            format: config()->string('unfurl.format', 'jpeg'),
+            deviceScaleFactor: config()->integer('unfurl.device_scale_factor', 2),
         );
     }
 
     public function createBrowsershotDriver(): BrowsershotRenderer
     {
         /** @var array{node_binary: string|null, npm_binary: string|null, chrome_path: string|null} $config */
-        $config = $this->config->get('og-image.drivers.browsershot', []);
+        $config = $this->config->get('unfurl.drivers.browsershot', []);
 
         return new BrowsershotRenderer(
             nodeBinary: $config['node_binary'] ?? null,
             npmBinary: $config['npm_binary'] ?? null,
             chromePath: $config['chrome_path'] ?? null,
-            format: config()->string('og-image.format', 'jpeg'),
-            deviceScaleFactor: config()->integer('og-image.device_scale_factor', 2),
+            format: config()->string('unfurl.format', 'jpeg'),
+            deviceScaleFactor: config()->integer('unfurl.device_scale_factor', 2),
         );
     }
 }

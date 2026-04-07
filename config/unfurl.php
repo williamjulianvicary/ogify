@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'driver' => env('OG_IMAGE_DRIVER', 'cloudflare'),
+    'driver' => env('UNFURL_DRIVER', 'cloudflare'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,9 +33,9 @@ return [
         ],
 
         'browsershot' => [
-            'node_binary' => env('OG_IMAGE_NODE_BINARY'),
-            'npm_binary' => env('OG_IMAGE_NPM_BINARY'),
-            'chrome_path' => env('OG_IMAGE_CHROME_PATH'),
+            'node_binary' => env('UNFURL_NODE_BINARY'),
+            'npm_binary' => env('UNFURL_NPM_BINARY'),
+            'chrome_path' => env('UNFURL_CHROME_PATH'),
         ],
 
     ],
@@ -50,8 +50,8 @@ return [
     */
 
     'storage' => [
-        'disk' => env('OG_IMAGE_DISK', 'public'),
-        'path' => env('OG_IMAGE_PATH', 'og-images'),
+        'disk' => env('UNFURL_DISK', 'public'),
+        'path' => env('UNFURL_PATH', 'og-images'),
     ],
 
     /*
@@ -93,8 +93,8 @@ return [
 
     'queue' => [
         'enabled' => true,
-        'connection' => env('OG_IMAGE_QUEUE_CONNECTION'),
-        'name' => env('OG_IMAGE_QUEUE'),
+        'connection' => env('UNFURL_QUEUE_CONNECTION'),
+        'name' => env('UNFURL_QUEUE'),
     ],
 
     /*
@@ -105,6 +105,8 @@ return [
     | When enabled, calling url() on the builder with a source set will
     | automatically dispatch a generation job if no image exists yet,
     | and return the expected URL.
+    |
+    | Disabling this value will return null if no image exists yet.
     |
     */
 
@@ -154,12 +156,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | The view namespace prefix used when resolving short template names.
-    | For example, template('basic') resolves to 'og-image::templates.basic'.
+    | For example, template('basic') resolves to 'unfurl::templates.basic'.
     | Change this to use your own published or custom view directory.
     |
     */
 
-    'template_prefix' => 'og-image::templates',
+    'template_prefix' => 'unfurl::templates',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,7 +176,7 @@ return [
 
     'route' => [
         'enabled' => false,
-        'prefix' => 'og-image',
+        'prefix' => 'unfurl',
         'middleware' => [],
     ],
 

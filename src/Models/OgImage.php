@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Models;
+namespace WilliamJulianVicary\Unfurl\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Storage;
  */
 final class OgImage extends Model
 {
-    protected $table = 'ogify_og_images';
+    protected $table = 'unfurl_og_images';
 
     protected $fillable = [
         'key',
@@ -45,13 +45,13 @@ final class OgImage extends Model
      */
     public function scopeFresh(Builder $query): Builder
     {
-        $days = config('og-image.refresh_after_days');
+        $days = config('unfurl.refresh_after_days');
 
         if ($days === null) {
             return $query;
         }
 
-        return $query->where('updated_at', '>=', Carbon::now()->subDays(config()->integer('og-image.refresh_after_days', 30)));
+        return $query->where('updated_at', '>=', Carbon::now()->subDays(config()->integer('unfurl.refresh_after_days', 30)));
     }
 
     public function url(): string

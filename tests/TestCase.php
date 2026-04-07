@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Tests;
+namespace WilliamJulianVicary\Unfurl\Tests;
 
 use Illuminate\Support\Facades\Http;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use WilliamJulianVicary\Ogify\OgImageServiceProvider;
+use WilliamJulianVicary\Unfurl\OgImageServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -23,9 +23,9 @@ abstract class TestCase extends BaseTestCase
             'database' => ':memory:',
         ]);
 
-        $app['config']->set('og-image.route.enabled', true);
-        $app['config']->set('og-image.driver', 'cloudflare');
-        $app['config']->set('og-image.drivers.cloudflare', [
+        $app['config']->set('unfurl.route.enabled', true);
+        $app['config']->set('unfurl.driver', 'cloudflare');
+        $app['config']->set('unfurl.drivers.cloudflare', [
             'account_id' => 'test-account-id',
             'api_token' => 'test-api-token',
         ]);

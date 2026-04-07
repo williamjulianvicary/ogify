@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Drivers;
+namespace WilliamJulianVicary\Unfurl\Drivers;
 
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
-use WilliamJulianVicary\Ogify\Contracts\Renderer;
+use WilliamJulianVicary\Unfurl\Contracts\Renderer;
 
 final readonly class CloudflareRenderer implements Renderer
 {

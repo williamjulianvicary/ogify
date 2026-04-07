@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Http\Controllers;
+namespace WilliamJulianVicary\Unfurl\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -37,7 +37,7 @@ final readonly class PreviewOgTemplateController
             return $name;
         }
 
-        $prefix = config()->string('og-image.template_prefix', 'og-image::templates');
+        $prefix = config()->string('unfurl.template_prefix', 'unfurl::templates');
 
         return sprintf('%s.%s', $prefix, $name);
     }

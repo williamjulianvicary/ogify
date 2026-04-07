@@ -5,20 +5,20 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
-use WilliamJulianVicary\Ogify\Facades\OgImage;
-use WilliamJulianVicary\Ogify\Jobs\GenerateOgImage;
-use WilliamJulianVicary\Ogify\Models\OgImage as OgImageModel;
+use WilliamJulianVicary\Unfurl\Facades\OgImage;
+use WilliamJulianVicary\Unfurl\Jobs\GenerateOgImage;
+use WilliamJulianVicary\Unfurl\Models\OgImage as OgImageModel;
 
 beforeEach(function (): void {
     Storage::fake('public');
 
-    config()->set('og-image.driver', 'cloudflare');
-    config()->set('og-image.storage.disk', 'public');
-    config()->set('og-image.storage.path', 'og-images');
-    config()->set('og-image.format', 'jpeg');
-    config()->set('og-image.queue.enabled', true);
-    config()->set('og-image.generate_on_access', true);
-    config()->set('og-image.drivers.cloudflare', [
+    config()->set('unfurl.driver', 'cloudflare');
+    config()->set('unfurl.storage.disk', 'public');
+    config()->set('unfurl.storage.path', 'og-images');
+    config()->set('unfurl.format', 'jpeg');
+    config()->set('unfurl.queue.enabled', true);
+    config()->set('unfurl.generate_on_access', true);
+    config()->set('unfurl.drivers.cloudflare', [
         'account_id' => 'test-account-id',
         'api_token' => 'test-api-token',
     ]);
@@ -82,7 +82,7 @@ test('url dispatches and returns expected url when source set and generate on ac
 
 test('url does not dispatch when generate on access disabled', function (): void {
     Bus::fake();
-    config()->set('og-image.generate_on_access', false);
+    config()->set('unfurl.generate_on_access', false);
 
     $url = OgImage::for('homepage')->screenshot('https://example.com')->url();
 
@@ -96,7 +96,7 @@ test('template builds signed url and dispatches', function (): void {
     $url = OgImage::for('homepage')->template('og-test', ['title' => 'Hello'])->generate();
 
     Bus::assertDispatched(GenerateOgImage::class, fn (GenerateOgImage $job): bool => $job->key === 'homepage'
-        && str_contains($job->url, 'og-image/render/og-test')
+        && str_contains($job->url, 'unfurl/render/og-test')
         && str_contains($job->url, 'signature='));
 
     expect($url)->toContain('og-images/homepage/default.jpeg');
@@ -138,7 +138,7 @@ test('delete removes images from storage and database', function (): void {
 
 test('generate dispatches synchronously when queue disabled', function (): void {
     Bus::fake();
-    config()->set('og-image.queue.enabled', false);
+    config()->set('unfurl.queue.enabled', false);
 
     OgImage::for('homepage')->screenshot('https://example.com')->generate();
 
@@ -147,7 +147,7 @@ test('generate dispatches synchronously when queue disabled', function (): void 
 
 test('url dispatches refresh when image is stale', function (): void {
     Bus::fake();
-    config()->set('og-image.refresh_after_days', 30);
+    config()->set('unfurl.refresh_after_days', 30);
 
     (new OgImageModel)->forceFill([
         'key' => 'homepage',
@@ -168,7 +168,7 @@ test('url dispatches refresh when image is stale', function (): void {
 
 test('url does not dispatch refresh when image is fresh', function (): void {
     Bus::fake();
-    config()->set('og-image.refresh_after_days', 30);
+    config()->set('unfurl.refresh_after_days', 30);
 
     (new OgImageModel)->forceFill([
         'key' => 'homepage',
@@ -188,7 +188,7 @@ test('url does not dispatch refresh when image is fresh', function (): void {
 
 test('url does not dispatch refresh when refresh is disabled', function (): void {
     Bus::fake();
-    config()->set('og-image.refresh_after_days');
+    config()->set('unfurl.refresh_after_days');
 
     (new OgImageModel)->forceFill([
         'key' => 'homepage',
@@ -208,7 +208,7 @@ test('url does not dispatch refresh when refresh is disabled', function (): void
 
 test('url dispatches refresh at exact boundary', function (): void {
     Bus::fake();
-    config()->set('og-image.refresh_after_days', 30);
+    config()->set('unfurl.refresh_after_days', 30);
 
     (new OgImageModel)->forceFill([
         'key' => 'homepage',

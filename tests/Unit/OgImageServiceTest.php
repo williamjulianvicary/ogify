@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
-use WilliamJulianVicary\Ogify\OgImageBuilder;
-use WilliamJulianVicary\Ogify\OgImageService;
+use WilliamJulianVicary\Unfurl\OgImageBuilder;
+use WilliamJulianVicary\Unfurl\OgImageService;
 
 test('for with string key returns builder', function (): void {
     $service = app(OgImageService::class);

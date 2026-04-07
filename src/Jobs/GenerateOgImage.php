@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Jobs;
+namespace WilliamJulianVicary\Unfurl\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -10,8 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Storage;
-use WilliamJulianVicary\Ogify\Models\OgImage;
-use WilliamJulianVicary\Ogify\OgImageManager;
+use WilliamJulianVicary\Unfurl\Models\OgImage;
+use WilliamJulianVicary\Unfurl\OgImageManager;
 
 final class GenerateOgImage implements ShouldBeUnique, ShouldQueue
 {
@@ -29,7 +29,7 @@ final class GenerateOgImage implements ShouldBeUnique, ShouldQueue
         public string $url,
         public string $variant = 'default',
     ) {
-        $queueConfig = config('og-image.queue', []);
+        $queueConfig = config('unfurl.queue', []);
 
         if (is_array($queueConfig)) {
             if (isset($queueConfig['connection']) && is_string($queueConfig['connection'])) {
@@ -57,9 +57,9 @@ final class GenerateOgImage implements ShouldBeUnique, ShouldQueue
             $dimensions['height'],
         );
 
-        $disk = config()->string('og-image.storage.disk', 'public');
-        $basePath = config()->string('og-image.storage.path', 'og-images');
-        $format = config()->string('og-image.format', 'jpeg');
+        $disk = config()->string('unfurl.storage.disk', 'public');
+        $basePath = config()->string('unfurl.storage.path', 'og-images');
+        $format = config()->string('unfurl.format', 'jpeg');
         $filePath = sprintf('%s/%s/%s.%s', $basePath, $this->key, $this->variant, $format);
 
         Storage::disk($disk)->put($filePath, $imageBytes);
@@ -82,7 +82,7 @@ final class GenerateOgImage implements ShouldBeUnique, ShouldQueue
     {
         if ($this->variant !== 'default') {
             /** @var array<string, array{width: int, height: int}> $variants */
-            $variants = config('og-image.variants', []);
+            $variants = config('unfurl.variants', []);
 
             if (isset($variants[$this->variant])) {
                 return $variants[$this->variant];
@@ -90,8 +90,8 @@ final class GenerateOgImage implements ShouldBeUnique, ShouldQueue
         }
 
         return [
-            'width' => config()->integer('og-image.width', 1200),
-            'height' => config()->integer('og-image.height', 630),
+            'width' => config()->integer('unfurl.width', 1200),
+            'height' => config()->integer('unfurl.height', 630),
         ];
     }
 }

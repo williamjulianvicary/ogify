@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ogify_og_images', function (Blueprint $table): void {
+        Schema::create('unfurl_og_images', function (Blueprint $table): void {
             $table->id();
             $table->string('key')->index();
             $table->string('variant')->default('default');
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('ogify_og_images');
+        Schema::dropIfExists('unfurl_og_images');
     }
 };

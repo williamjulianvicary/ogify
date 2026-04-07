@@ -10,7 +10,7 @@ beforeEach(function (): void {
 });
 
 test('renders template with decoded params via signed url', function (): void {
-    $url = URL::signedRoute('og-image.render', [
+    $url = URL::signedRoute('unfurl.render', [
         'template' => 'og-test',
         'params' => base64_encode(json_encode(['title' => 'Hello World'])),
     ]);
@@ -22,7 +22,7 @@ test('renders template with decoded params via signed url', function (): void {
 });
 
 test('rejects unsigned requests', function (): void {
-    $url = URL::route('og-image.render', ['template' => 'og-test']);
+    $url = URL::route('unfurl.render', ['template' => 'og-test']);
 
     $response = $this->get($url);
 
@@ -30,7 +30,7 @@ test('rejects unsigned requests', function (): void {
 });
 
 test('returns 404 for non-existent template', function (): void {
-    $url = URL::signedRoute('og-image.render', [
+    $url = URL::signedRoute('unfurl.render', [
         'template' => 'non-existent-view',
     ]);
 
@@ -40,7 +40,7 @@ test('returns 404 for non-existent template', function (): void {
 });
 
 test('renders template without params', function (): void {
-    $url = URL::signedRoute('og-image.render', [
+    $url = URL::signedRoute('unfurl.render', [
         'template' => 'og-test',
         'params' => base64_encode(json_encode(['title' => 'No Params'])),
     ]);

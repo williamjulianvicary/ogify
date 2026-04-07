@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Facades;
+namespace WilliamJulianVicary\Unfurl\Facades;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Facade;
-use WilliamJulianVicary\Ogify\OgImageBuilder;
-use WilliamJulianVicary\Ogify\OgImageService;
+use WilliamJulianVicary\Unfurl\OgImageBuilder;
+use WilliamJulianVicary\Unfurl\OgImageService;
 
 /**
  * @method static OgImageBuilder for(string|Model $subject)

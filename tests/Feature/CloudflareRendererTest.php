@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Http;
-use WilliamJulianVicary\Ogify\Drivers\CloudflareRenderer;
+use WilliamJulianVicary\Unfurl\Drivers\CloudflareRenderer;
 
 test('sends url-based screenshot request to cloudflare', function (): void {
     Http::fake([

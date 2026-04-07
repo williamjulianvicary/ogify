@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use WilliamJulianVicary\Ogify\Jobs\GenerateOgImage;
-use WilliamJulianVicary\Ogify\Models\OgImage;
-use WilliamJulianVicary\Ogify\OgImageManager;
+use WilliamJulianVicary\Unfurl\Jobs\GenerateOgImage;
+use WilliamJulianVicary\Unfurl\Models\OgImage;
+use WilliamJulianVicary\Unfurl\OgImageManager;
 
 beforeEach(function (): void {
     Storage::fake('public');
 
-    config()->set('og-image.driver', 'cloudflare');
-    config()->set('og-image.storage.disk', 'public');
-    config()->set('og-image.storage.path', 'og-images');
-    config()->set('og-image.format', 'jpeg');
-    config()->set('og-image.width', 1200);
-    config()->set('og-image.height', 630);
-    config()->set('og-image.device_scale_factor', 2);
-    config()->set('og-image.drivers.cloudflare', [
+    config()->set('unfurl.driver', 'cloudflare');
+    config()->set('unfurl.storage.disk', 'public');
+    config()->set('unfurl.storage.path', 'og-images');
+    config()->set('unfurl.format', 'jpeg');
+    config()->set('unfurl.width', 1200);
+    config()->set('unfurl.height', 630);
+    config()->set('unfurl.device_scale_factor', 2);
+    config()->set('unfurl.drivers.cloudflare', [
         'account_id' => 'test-account-id',
         'api_token' => 'test-api-token',
     ]);
@@ -55,7 +55,7 @@ test('creates database record', function (): void {
 });
 
 test('uses variant dimensions', function (): void {
-    config()->set('og-image.variants', [
+    config()->set('unfurl.variants', [
         'twitter' => ['width' => 1200, 'height' => 600],
     ]);
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify;
+namespace WilliamJulianVicary\Unfurl;
 
 use Illuminate\Database\Eloquent\Model;
-use WilliamJulianVicary\Ogify\Jobs\GenerateOgImage;
+use WilliamJulianVicary\Unfurl\Jobs\GenerateOgImage;
 
 final readonly class OgImageService
 {
@@ -36,7 +36,7 @@ final readonly class OgImageService
      */
     public function dispatch(GenerateOgImage $job): void
     {
-        if (config('og-image.queue.enabled', true)) {
+        if (config('unfurl.queue.enabled', true)) {
             dispatch($job);
         } else {
             dispatch_sync($job);

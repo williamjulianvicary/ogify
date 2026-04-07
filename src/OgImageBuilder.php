@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify;
+namespace WilliamJulianVicary\Unfurl;
 
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use RuntimeException;
-use WilliamJulianVicary\Ogify\Jobs\GenerateOgImage;
-use WilliamJulianVicary\Ogify\Models\OgImage;
+use WilliamJulianVicary\Unfurl\Jobs\GenerateOgImage;
+use WilliamJulianVicary\Unfurl\Models\OgImage;
 
 final class OgImageBuilder
 {
@@ -36,19 +36,19 @@ final class OgImageBuilder
     /**
      * Set the source as a Blade template rendered via the package's signed route.
      *
-     * Requires the template render route to be enabled in config (og-image.route.enabled).
+     * Requires the template render route to be enabled in config (unfurl.route.enabled).
      *
      * @param  array<string, mixed>  $params
      */
     public function template(string $view, array $params = []): self
     {
-        if (! config('og-image.route.enabled', false)) {
+        if (! config('unfurl.route.enabled', false)) {
             throw new RuntimeException(
-                'The OG image template route is not enabled. Set "route.enabled" to true in your og-image config.',
+                'The OG image template route is not enabled. Set "route.enabled" to true in your unfurl config.',
             );
         }
 
-        $this->sourceUrl = URL::signedRoute('og-image.render', [
+        $this->sourceUrl = URL::signedRoute('unfurl.render', [
             'template' => $view,
             'params' => base64_encode(json_encode($params, JSON_THROW_ON_ERROR)),
         ]);
@@ -87,7 +87,7 @@ final class OgImageBuilder
             return $ogImage->url();
         }
 
-        if (config('og-image.generate_on_access', true)) {
+        if (config('unfurl.generate_on_access', true)) {
             if ($this->sourceUrl === null && app()->runningInConsole()) {
                 return null;
             }
@@ -110,13 +110,13 @@ final class OgImageBuilder
      */
     private function refreshIfStale(OgImage $ogImage): void
     {
-        $days = config('og-image.refresh_after_days');
+        $days = config('unfurl.refresh_after_days');
 
         if ($days === null) {
             return;
         }
 
-        if ($ogImage->updated_at >= Carbon::now()->subDays(config()->integer('og-image.refresh_after_days', 30))) {
+        if ($ogImage->updated_at >= Carbon::now()->subDays(config()->integer('unfurl.refresh_after_days', 30))) {
             return;
         }
 
@@ -218,7 +218,7 @@ final class OgImageBuilder
     {
         if ($variant !== 'default') {
             /** @var array<string, array{width: int, height: int}> $variants */
-            $variants = config('og-image.variants', []);
+            $variants = config('unfurl.variants', []);
 
             if (isset($variants[$variant])) {
                 return $variants[$variant];
@@ -226,8 +226,8 @@ final class OgImageBuilder
         }
 
         return [
-            'width' => config()->integer('og-image.width', 1200),
-            'height' => config()->integer('og-image.height', 630),
+            'width' => config()->integer('unfurl.width', 1200),
+            'height' => config()->integer('unfurl.height', 630),
         ];
     }
 
@@ -236,9 +236,9 @@ final class OgImageBuilder
      */
     private function expectedUrl(string $variant): string
     {
-        $disk = config()->string('og-image.storage.disk', 'public');
-        $basePath = config()->string('og-image.storage.path', 'og-images');
-        $format = config()->string('og-image.format', 'jpeg');
+        $disk = config()->string('unfurl.storage.disk', 'public');
+        $basePath = config()->string('unfurl.storage.path', 'og-images');
+        $format = config()->string('unfurl.format', 'jpeg');
 
         $path = sprintf('%s/%s/%s.%s', $basePath, $this->key, $variant, $format);
         $filesystem = Storage::disk($disk);

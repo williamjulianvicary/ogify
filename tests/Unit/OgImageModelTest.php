@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Storage;
-use WilliamJulianVicary\Ogify\Models\OgImage;
+use WilliamJulianVicary\Unfurl\Models\OgImage;
 
 test('url returns storage url for the image', function (): void {
     Storage::fake('public');
@@ -20,7 +20,7 @@ test('url returns storage url for the image', function (): void {
 });
 
 test('fresh scope excludes stale images', function (): void {
-    config()->set('og-image.refresh_after_days', 30);
+    config()->set('unfurl.refresh_after_days', 30);
 
     (new OgImage)->forceFill([
         'key' => 'stale',
@@ -47,7 +47,7 @@ test('fresh scope excludes stale images', function (): void {
 });
 
 test('fresh scope includes all when refresh is disabled', function (): void {
-    config()->set('og-image.refresh_after_days');
+    config()->set('unfurl.refresh_after_days');
 
     (new OgImage)->forceFill([
         'key' => 'old',

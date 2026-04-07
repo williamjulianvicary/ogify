@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WilliamJulianVicary\Ogify\Contracts;
+namespace WilliamJulianVicary\Unfurl\Contracts;
 
 interface Renderer
 {
