@@ -236,6 +236,19 @@ OgImage::for($user)->screenshot($user->profile_url)->url();
 - **Cloudflare Browser Rendering** (default) - Uses the Cloudflare Browser Rendering API
 - **Browsershot** - Uses [spatie/browsershot](https://github.com/spatie/browsershot) for local rendering
 
+### Cloudflare limits
+
+Cloudflare Browser Rendering enforces usage limits that vary by plan — see the [official limits documentation](https://developers.cloudflare.com/browser-rendering/limits/) for details.
+
+By default, Unfurl's queue middleware is configured to stay within the free tier limits (`queue.without_overlapping` enabled and `queue.rate_limit` set to 6 per minute). If you are on a paid Cloudflare plan you can relax or disable these constraints in `config/unfurl.php`:
+
+```php
+'queue' => [
+    'without_overlapping' => false, // allow concurrent rendering jobs
+    'rate_limit' => null,           // disable rate limiting (or set a higher value)
+],
+```
+
 ## Configuration
 
 After publishing the config file (`config/unfurl.php`), the following options are available:
